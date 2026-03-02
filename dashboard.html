@@ -3,42 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZOLOG Dashboard</title>
+    <title>Dashboard - BGPL Albatros</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="assets/styles/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/styles/custom.css">
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-hidden flex h-screen">
-
-    <aside class="w-64 bg-indigo-900 text-white flex flex-col transition-all duration-300 shadow-xl z-20" id="sidebar">
-        <div class="h-16 flex items-center px-6 border-b border-indigo-800 font-bold text-xl tracking-wider">
-            ZOLOG <span class="text-indigo-300 ml-2 text-sm font-normal">System</span>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
+    
+    <aside id="sidebar" class="w-64 bg-indigo-900 text-white flex flex-col transition-all duration-300">
+        <div class="p-4 border-b border-indigo-800 flex justify-between items-center">
+            <span class="text-xl font-bold tracking-wider">ALBATROS</span>
         </div>
-        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto" id="nav-menu">
-            </nav>
+        <nav id="sidebar-nav" class="flex-1 overflow-y-auto py-4"></nav>
         <div class="p-4 border-t border-indigo-800">
-            <button id="btnLogout" class="flex items-center w-full px-4 py-2 text-sm text-indigo-200 hover:bg-indigo-800 hover:text-white rounded-lg transition">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                Logout
-            </button>
+            <button id="logoutBtn" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded">Logout</button>
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
-        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-6 z-10 border-b border-gray-200">
-            <button id="btnToggleSidebar" class="text-gray-500 hover:text-indigo-600 focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            </button>
+    <div class="flex-1 flex flex-col">
+        <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+            <h2 id="page-title" class="text-xl font-semibold text-gray-800">Dashboard</h2>
             <div class="flex items-center space-x-4">
-                <span class="text-sm font-medium text-gray-600" id="userNameDisplay">Welcome, User</span>
-                <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">U</div>
+                <span id="userInfo" class="text-sm font-medium text-gray-600"></span>
             </div>
         </header>
+        <main class="flex-1 overflow-y-auto p-6" id="app-content">
+            </main>
+    </div>
 
-        <div id="app-content" class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
-            </div>
-    </main>
-
-    <script type="module" src="assets/js/app.js"></script>
+    <script type="module" src="./assets/js/app.js"></script>
 </body>
 </html>
