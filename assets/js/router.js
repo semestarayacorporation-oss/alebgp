@@ -2,7 +2,9 @@ const routes = {
     '': { module: '../modules/operasional-dashboard.js', title: 'Dashboard Operasional' },
     '#/dashboard-ops': { module: '../modules/operasional-dashboard.js', title: 'Dashboard Operasional' },
     '#/master-user': { module: '../modules/master-user.js', title: 'Master User' },
-    '#/resi-cash': { module: '../modules/sales-resi.js', title: 'Entri Resi Cash' }
+    '#/resi-cash': { module: '../modules/sales-resi.js', title: 'Entri Resi Cash' },
+    '#/master-pelanggan': { module: '../modules/master-pelanggan.js', title: 'Data Master - Pelanggan' },
+    '#/ar-ap': { module: '../modules/ar-ap.js', title: 'Account Receivable (AR)' }
 };
 
 export const initRouter = () => {
@@ -17,7 +19,6 @@ export const initRouter = () => {
             titleEl.textContent = route.title;
             
             try {
-                // Dynamic import for module
                 const module = await import(route.module);
                 container.innerHTML = ''; 
                 module.render(container);
@@ -30,5 +31,5 @@ export const initRouter = () => {
     };
 
     window.addEventListener('hashchange', renderRoute);
-    renderRoute(); // Trigger on initial load
+    renderRoute();
 };
