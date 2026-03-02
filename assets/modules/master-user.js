@@ -1,89 +1,81 @@
-import { getDB, saveDB } from '../js/db.js';
+import { db } from '../js/db.js';
 
-export const render = (container) => {
-    let users = getDB('zolog_users');
+export const render = async () => `
+    <div class="mb-6 flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">Master User</h2>
+            <p class="text-sm text-gray-500">Kelola akses dan role pengguna sistem.</p>
+        </div>
+    </div>
+    
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div class="p-5 border-b border-gray-100 bg-gray-50/50">
+            <h3 class="font-semibold text-gray-700">Tambah User Baru</h3>
+            <form id="formUser" class="mt-4 flex gap-4 items-end">
+                <div class="flex-1">
+                    <label class="block text-xs text-gray-500 mb-1">Nama Lengkap</label>
+                    <input type="text" id="u_name" required class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div class="flex-1">
+                    <label class="block text-xs text-gray-500 mb-1">Role</label>
+                    <select id="u_role" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <option value="admin">Admin</option>
+                        <option value="operator">Operator</option>
+                    </select>
+                </div>
+                <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition shadow-sm">Simpan</button>
+            </form>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-600">
+                <thead class="bg-gray-50 text-gray-700 border-b">
+                    <tr>
+                        <th class="px-6 py-3 font-medium">ID</th>
+                        <th class="px-6 py-3 font-medium">Nama</th>
+                        <th class="px-6 py-3 font-medium">Role</th>
+                        <th class="px-6 py-3 font-medium text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody" class="divide-y divide-gray-100">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+`;
 
-    const renderTable = () => {
-        const tbody = document.getElementById('userTableBody');
-        tbody.innerHTML = users.map((u, index) => `
-            <tr class="border-b border-slate-100 hover:bg-slate-50">
-                <td class="p-4 text-sm text-slate-700">${index + 1}</td>
-                <td class="p-4 text-sm font-medium text-slate-800">${u.name}</td>
-                <td class="p-4 text-sm text-slate-600">${u.username}</td>
-                <td class="p-4 text-sm text-slate-600">${u.role}</td>
-                <td class="p-4 text-sm">
-                    <button class="text-red-500 hover:text-red-700 text-sm delete-btn" data-id="${u.id}">Hapus</button>
+export const init = () => {
+    const loadTable = () => {
+        const users = db.getUsers();
+        document.getElementById('userTableBody').innerHTML = users.map(u => `
+            <tr class="hover:bg-gray-50 transition">
+                <td class="px-6 py-4">USR-${u.id.toString().slice(-4)}</td>
+                <td class="px-6 py-4 font-medium text-gray-800">${u.name}</td>
+                <td class="px-6 py-4"><span class="px-2 py-1 bg-indigo-50 text-indigo-700 rounded text-xs font-semibold uppercase">${u.role}</span></td>
+                <td class="px-6 py-4 text-right">
+                    <button class="text-red-500 hover:text-red-700 text-sm font-medium btn-delete" data-id="${u.id}">Hapus</button>
                 </td>
             </tr>
         `).join('');
-
-        // Attach delete events
-        document.querySelectorAll('.delete-btn').forEach(btn => {
+        
+        document.querySelectorAll('.btn-delete').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const id = e.target.getAttribute('data-id');
-                users = users.filter(u => u.id !== id);
-                saveDB('zolog_users', users);
-                renderTable();
+                db.deleteUser(parseInt(e.target.dataset.id));
+                loadTable();
             });
         });
     };
 
-    container.innerHTML = `
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="p-6 border-b border-slate-200 flex justify-between items-center">
-                <h2 class="text-lg font-semibold text-slate-800">Daftar Pengguna</h2>
-            </div>
-            <div class="p-6 bg-slate-50 border-b border-slate-200">
-                <form id="addUserForm" class="flex gap-4 items-end">
-                    <div class="flex-1">
-                        <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap</label>
-                        <input type="text" id="addName" class="w-full px-3 py-2 border rounded-lg text-sm" required>
-                    </div>
-                    <div class="flex-1">
-                        <label class="block text-xs font-medium text-slate-500 mb-1">Username</label>
-                        <input type="text" id="addUsername" class="w-full px-3 py-2 border rounded-lg text-sm" required>
-                    </div>
-                    <div class="flex-1">
-                        <label class="block text-xs font-medium text-slate-500 mb-1">Role</label>
-                        <select id="addRole" class="w-full px-3 py-2 border rounded-lg text-sm">
-                            <option value="Admin Cabang">Admin Cabang</option>
-                            <option value="CS Counter">CS Counter</option>
-                            <option value="Operasional">Operasional</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">Tambah</button>
-                </form>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 border-b border-slate-200">
-                            <th class="p-4 text-xs font-semibold text-slate-500 uppercase">No</th>
-                            <th class="p-4 text-xs font-semibold text-slate-500 uppercase">Nama</th>
-                            <th class="p-4 text-xs font-semibold text-slate-500 uppercase">Username</th>
-                            <th class="p-4 text-xs font-semibold text-slate-500 uppercase">Role</th>
-                            <th class="p-4 text-xs font-semibold text-slate-500 uppercase">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody"></tbody>
-                </table>
-            </div>
-        </div>
-    `;
+    loadTable();
 
-    renderTable();
-
-    document.getElementById('addUserForm').addEventListener('submit', (e) => {
+    document.getElementById('formUser').addEventListener('submit', (e) => {
         e.preventDefault();
-        const newUser = {
-            id: Date.now().toString(),
-            name: document.getElementById('addName').value,
-            username: document.getElementById('addUsername').value,
-            role: document.getElementById('addRole').value
-        };
-        users.push(newUser);
-        saveDB('zolog_users', users);
-        renderTable();
+        db.saveUser({
+            name: document.getElementById('u_name').value,
+            role: document.getElementById('u_role').value,
+            status: 'Aktif'
+        });
         e.target.reset();
+        loadTable();
     });
 };
