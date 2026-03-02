@@ -1,44 +1,46 @@
-import { render as renderOps, init as initOps } from '../modules/operasional-dashboard.js';
-import { render as renderUser, init as initUser } from '../modules/master-user.js';
-import { render as renderResi, init as initResi } from '../modules/sales-resi.js';
-import { render as renderCustomer, init as initCustomer } from '../modules/master-customer.js';
-import { render as renderVendor, init as initVendor } from '../modules/master-vendor.js';
-import { render as renderTarif, init as initTarif } from '../modules/operasional-tarif.js';
-import { render as renderTracing, init as initTracing } from '../modules/operasional-tracing.js';
-import { render as renderDelivery, init as initDelivery } from '../modules/operasional-delivery.js';
+import { getDb } from './db.js';
 
 const routes = {
-    '#/dashboard-ops': { render: renderOps, init: initOps },
-    '#/master-user': { render: renderUser, init: initUser },
-    '#/resi-cash': { render: renderResi, init: initResi },
-'#/master-customer': { render: renderCustomer, init: initCustomer },
-'#/master-vendor': { render: renderVendor, init: initVendor },
-'#/ops-tarif': { render: renderTarif, init: initTarif },
-'#/ops-tracing': { render: renderTracing, init: initTracing },
-'#/ops-delivery': { render: renderDelivery, init: initDelivery },
+    '/': { title: 'Dashboard', module: null }, // Bisa dibuat module dashboard terpisah
+    '/master/users': { title: 'Master Data - Users', module: './../modules/master/users.js', allowed: ['Super Admin'] },
+    '/sales/resi-cash': { title: 'Sales - Resi Cash', module: './../modules/sales/resi-cash.js', allowed: ['Super Admin', 'CS Counter'] },
+    '/operasional/outgoing': { title: 'Operasional - Outgoing', module: './../modules/operasional/outgoing.js', allowed: ['Super Admin', 'Operasional'] },
+    '/ar/invoice': { title: 'AR - Invoice', module: './../modules/ar/invoice.js', allowed: ['Super Admin', 'Finance / AR'] }
 };
 
-export const initRouter = () => {
-    const contentDiv = document.getElementById('app-content');
+export const initRouter = async () => {
+    const session = JSON.parse(localStorage.getItem('session_user'));
+    if (!session) {
+        window.location.href = 'index.html';
+        return;
+    }
 
-    const handleRouteChange = async () => {
-        let hash = window.location.hash;
-        if (!hash) {
-            hash = '#/dashboard-ops';
-            window.location.hash = hash;
+    const route = window.location.hash.slice(1) || '/';
+    const routeConfig = routes[route];
+    
+    if (routeConfig) {
+        // RBAC Check
+        if (routeConfig.allowed && !routeConfig.allowed.includes(session.role)) {
+            document.getElementById('app-content').innerHTML = `<div class="p-4 bg-red-100 text-red-700 rounded-lg">Akses Ditolak. Role ${session.role} tidak diizinkan.</div>`;
             return;
         }
 
-        const route = routes[hash];
-        if (route) {
-            contentDiv.innerHTML = '<div class="text-center text-gray-500 py-10">Loading module...</div>';
-            contentDiv.innerHTML = await route.render();
-            if (route.init) route.init();
+        document.getElementById('page-title').innerText = routeConfig.title;
+        const container = document.getElementById('app-content');
+        
+        if (routeConfig.module) {
+            container.innerHTML = '<p class="text-gray-500">Memuat modul...</p>';
+            try {
+                const module = await import(routeConfig.module);
+                container.innerHTML = module.render();
+                if(module.afterRender) module.afterRender();
+            } catch (err) {
+                container.innerHTML = `<div class="p-4 bg-red-100 text-red-700">Gagal memuat modul: ${err.message}</div>`;
+            }
         } else {
-            contentDiv.innerHTML = `<div class="p-8 bg-red-50 text-red-600 rounded-xl border border-red-200">404 - Module Not Found</div>`;
+            container.innerHTML = `<h2 class="text-2xl font-bold">Selamat Datang di Albatros, ${session.name}</h2>`;
         }
-    };
-
-    window.addEventListener('hashchange', handleRouteChange);
-    handleRouteChange(); // Trigger on initial load
+    } else {
+        document.getElementById('app-content').innerHTML = '<h2 class="text-2xl font-bold text-gray-400">404 - Modul Tidak Ditemukan</h2>';
+    }
 };
