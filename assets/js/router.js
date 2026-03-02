@@ -3,6 +3,9 @@ import { render as renderUser, init as initUser } from '../modules/master-user.j
 import { render as renderResi, init as initResi } from '../modules/sales-resi.js';
 import { render as renderCustomer, init as initCustomer } from '../modules/master-customer.js';
 import { render as renderVendor, init as initVendor } from '../modules/master-vendor.js';
+import { render as renderTarif, init as initTarif } from '../modules/operasional-tarif.js';
+import { render as renderTracing, init as initTracing } from '../modules/operasional-tracing.js';
+import { render as renderDelivery, init as initDelivery } from '../modules/operasional-delivery.js';
 
 const routes = {
     '#/dashboard-ops': { render: renderOps, init: initOps },
@@ -10,6 +13,9 @@ const routes = {
     '#/resi-cash': { render: renderResi, init: initResi },
 '#/master-customer': { render: renderCustomer, init: initCustomer },
 '#/master-vendor': { render: renderVendor, init: initVendor },
+'#/ops-tarif': { render: renderTarif, init: initTarif },
+'#/ops-tracing': { render: renderTracing, init: initTracing },
+'#/ops-delivery': { render: renderDelivery, init: initDelivery },
 };
 
 export const initRouter = () => {
