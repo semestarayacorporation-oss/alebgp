@@ -1,11 +1,15 @@
 import { render as renderOps, init as initOps } from '../modules/operasional-dashboard.js';
 import { render as renderUser, init as initUser } from '../modules/master-user.js';
 import { render as renderResi, init as initResi } from '../modules/sales-resi.js';
+import { render as renderCustomer, init as initCustomer } from '../modules/master-customer.js';
+import { render as renderVendor, init as initVendor } from '../modules/master-vendor.js';
 
 const routes = {
     '#/dashboard-ops': { render: renderOps, init: initOps },
     '#/master-user': { render: renderUser, init: initUser },
     '#/resi-cash': { render: renderResi, init: initResi },
+'#/master-customer': { render: renderCustomer, init: initCustomer },
+'#/master-vendor': { render: renderVendor, init: initVendor },
 };
 
 export const initRouter = () => {
