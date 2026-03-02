@@ -1,33 +1,24 @@
-const initDB = () => {
-    if (!localStorage.getItem('zolog_users')) {
-        localStorage.setItem('zolog_users', JSON.stringify([{ id: 1, name: 'Admin Pusat', role: 'admin', status: 'Aktif' }]));
-    }
-    if (!localStorage.getItem('zolog_resi')) {
-        localStorage.setItem('zolog_resi', JSON.stringify([]));
+// Mock Database ES6 Module
+export const generateId = () => '_' + Math.random().toString(36).substr(2, 9);
+
+export const dbInit = () => {
+    const initialState = {
+        users: [
+            { id: 'u1', username: 'admin', password: '123', role: 'Super Admin', name: 'Super Admin' },
+            { id: 'u2', username: 'sales1', password: '123', role: 'CS Counter', name: 'User Sales' }
+        ],
+        roles: ['Super Admin', 'Admin Cabang', 'CS Counter', 'Operasional', 'Finance / AR'],
+        customers: [{ id: 'c1', name: 'PT Angkasa Sejahtera', code: 'CUST-001' }],
+        services: [{ id: 's1', name: 'Paket Darat', price: 15000 }],
+        resi: [],
+        outgoing: [],
+        invoices: []
+    };
+
+    if (!localStorage.getItem('albatros_db')) {
+        localStorage.setItem('albatros_db', JSON.stringify(initialState));
     }
 };
 
-initDB();
-
-export const db = {
-    getUsers: () => JSON.parse(localStorage.getItem('zolog_users')),
-    saveUser: (user) => {
-        const users = db.getUsers();
-        user.id = Date.now();
-        users.push(user);
-        localStorage.setItem('zolog_users', JSON.stringify(users));
-    },
-    deleteUser: (id) => {
-        const users = db.getUsers().filter(u => u.id !== id);
-        localStorage.setItem('zolog_users', JSON.stringify(users));
-    },
-    
-    getResi: () => JSON.parse(localStorage.getItem('zolog_resi')),
-    saveResi: (resi) => {
-        const data = db.getResi();
-        resi.id = 'AWB' + Date.now().toString().slice(-6);
-        resi.tanggal = new Date().toISOString().split('T')[0];
-        data.push(resi);
-        localStorage.setItem('zolog_resi', JSON.stringify(data));
-    }
-};
+export const getDb = () => JSON.parse(localStorage.getItem('albatros_db'));
+export const saveDb = (data) => localStorage.setItem('albatros_db', JSON.stringify(data));
