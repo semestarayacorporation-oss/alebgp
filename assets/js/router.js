@@ -1,37 +1,34 @@
+import { render as renderOps, init as initOps } from '../modules/operasional-dashboard.js';
+import { render as renderUser, init as initUser } from '../modules/master-user.js';
+import { render as renderResi, init as initResi } from '../modules/sales-resi.js';
+
 const routes = {
-    '': { module: '../modules/operasional-dashboard.js', title: 'Dashboard Operasional' },
-    '#/dashboard-ops': { module: '../modules/operasional-dashboard.js', title: 'Dashboard Operasional' },
-    '#/master-user': { module: '../modules/master-user.js', title: 'Master User' },
-    '#/resi-cash': { module: '../modules/sales-resi.js', title: 'Entri Resi Cash' },
-    '#/master-pelanggan': { module: '../modules/master-pelanggan.js', title: 'Data Master - Pelanggan' },
-    '#/ar-ap': { module: '../modules/ar-ap.js', title: 'Account Receivable (AR)' }
-    // Tambahkan baris ini di dalam object 'routes' pada router.js
-'#/operasional-flow': { module: '../modules/operasional-flow.js', title: 'Flow Operasional & POD' },
+    '#/dashboard-ops': { render: renderOps, init: initOps },
+    '#/master-user': { render: renderUser, init: initUser },
+    '#/resi-cash': { render: renderResi, init: initResi },
 };
 
 export const initRouter = () => {
-    const renderRoute = async () => {
-        const hash = window.location.hash || '#/dashboard-ops';
-        const route = routes[hash];
-        const container = document.getElementById('app-content');
-        const titleEl = document.getElementById('pageTitle');
+    const contentDiv = document.getElementById('app-content');
 
+    const handleRouteChange = async () => {
+        let hash = window.location.hash;
+        if (!hash) {
+            hash = '#/dashboard-ops';
+            window.location.hash = hash;
+            return;
+        }
+
+        const route = routes[hash];
         if (route) {
-            container.innerHTML = '<div class="flex justify-center p-10"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>';
-            titleEl.textContent = route.title;
-            
-            try {
-                const module = await import(route.module);
-                container.innerHTML = ''; 
-                module.render(container);
-            } catch (error) {
-                container.innerHTML = `<div class="p-4 bg-red-50 text-red-600 rounded-xl">Error loading module: ${error.message}</div>`;
-            }
+            contentDiv.innerHTML = '<div class="text-center text-gray-500 py-10">Loading module...</div>';
+            contentDiv.innerHTML = await route.render();
+            if (route.init) route.init();
         } else {
-            container.innerHTML = `<div class="p-4 bg-yellow-50 text-yellow-700 rounded-xl">404 - Modul tidak ditemukan</div>`;
+            contentDiv.innerHTML = `<div class="p-8 bg-red-50 text-red-600 rounded-xl border border-red-200">404 - Module Not Found</div>`;
         }
     };
 
-    window.addEventListener('hashchange', renderRoute);
-    renderRoute();
+    window.addEventListener('hashchange', handleRouteChange);
+    handleRouteChange(); // Trigger on initial load
 };
