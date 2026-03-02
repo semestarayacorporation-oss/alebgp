@@ -3,44 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - ZOLOG System</title>
+    <title>ZOLOG Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="./assets/styles/custom.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="assets/styles/custom.css" rel="stylesheet">
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans overflow-hidden">
-    <div class="flex h-screen w-full">
-        <aside class="w-64 bg-slate-900 text-white flex flex-col transition-all duration-300 z-20" id="sidebar">
-            <div class="h-16 flex items-center px-6 border-b border-slate-800">
-                <h2 class="text-xl font-bold tracking-wider text-indigo-400">BGP <span class="text-sm font-normal text-slate-400">zolog</span></h2>
-            </div>
-            <nav class="flex-1 overflow-y-auto py-4 space-y-1 px-3">
-                <a href="#/dashboard-ops" class="nav-link block px-3 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">Dashboard Operasional</a>
-                <a href="#/master-pelanggan" class="nav-link block px-3 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">Master Pelanggan</a>
-<a href="#/ar-ap" class="nav-link block px-3 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">AR / AP (Keuangan)</a>
-                <a href="#/master-user" class="nav-link block px-3 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">Master User</a>
-                <a href="#/resi-cash" class="nav-link block px-3 py-2.5 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">Entri Resi Cash</a>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-hidden flex h-screen">
+
+    <aside class="w-64 bg-indigo-900 text-white flex flex-col transition-all duration-300 shadow-xl z-20" id="sidebar">
+        <div class="h-16 flex items-center px-6 border-b border-indigo-800 font-bold text-xl tracking-wider">
+            ZOLOG <span class="text-indigo-300 ml-2 text-sm font-normal">System</span>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto" id="nav-menu">
             </nav>
-            <div class="p-4 border-t border-slate-800">
-                <div class="text-sm text-slate-400 mb-2" id="userInfo">Loading...</div>
-                <button id="logoutBtn" class="w-full text-left px-3 py-2 text-red-400 hover:bg-slate-800 rounded-lg transition-colors">Logout</button>
+        <div class="p-4 border-t border-indigo-800">
+            <button id="btnLogout" class="flex items-center w-full px-4 py-2 text-sm text-indigo-200 hover:bg-indigo-800 hover:text-white rounded-lg transition">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-6 z-10 border-b border-gray-200">
+            <button id="btnToggleSidebar" class="text-gray-500 hover:text-indigo-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm font-medium text-gray-600" id="userNameDisplay">Welcome, User</span>
+                <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">U</div>
             </div>
-        </aside>
+        </header>
 
-        <main class="flex-1 flex flex-col h-screen overflow-hidden">
-            <header class="h-16 bg-white shadow-sm border-b border-slate-200 flex items-center justify-between px-6 z-10">
-                <div class="flex items-center gap-4">
-                    <button id="sidebarToggle" class="text-slate-500 hover:text-slate-700">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                    </button>
-                    <h1 class="text-lg font-semibold text-slate-800" id="pageTitle">Dashboard</h1>
-                </div>
-            </header>
+        <div id="app-content" class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
+            </div>
+    </main>
 
-            <div id="app-content" class="flex-1 overflow-y-auto p-6">
-                </div>
-        </main>
-    </div>
-
-    <script type="module" src="./assets/js/app.js"></script>
+    <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>
