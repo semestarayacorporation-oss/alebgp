@@ -5,6 +5,8 @@ const routes = {
     '#/resi-cash': { module: '../modules/sales-resi.js', title: 'Entri Resi Cash' },
     '#/master-pelanggan': { module: '../modules/master-pelanggan.js', title: 'Data Master - Pelanggan' },
     '#/ar-ap': { module: '../modules/ar-ap.js', title: 'Account Receivable (AR)' }
+    // Tambahkan baris ini di dalam object 'routes' pada router.js
+'#/operasional-flow': { module: '../modules/operasional-flow.js', title: 'Flow Operasional & POD' },
 };
 
 export const initRouter = () => {
