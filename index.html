@@ -3,26 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - BGPL Albatros</title>
+    <title>Portal Utama | PT. Albatros Express</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50 flex items-center justify-center h-screen">
-    <div class="bg-white p-8 rounded-xl shadow-md w-96">
-        <h1 class="text-2xl font-bold text-indigo-700 text-center mb-6">BGPL Albatros</h1>
-        <form id="loginForm">
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
-                <input type="text" id="username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" required placeholder="admin">
-            </div>
-            <div class="mb-6">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                <input type="password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500" required placeholder="admin123">
-            </div>
-            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Login
-            </button>
-        </form>
+<body class="bg-gradient-to-br from-blue-900 to-gray-900 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-4xl w-full">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-white mb-2">PT. Albatros Express</h1>
+            <p class="text-blue-200 text-lg">BGPL Provider Logistics System</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <a href="corporate.html" class="bg-white rounded-2xl p-8 shadow-2xl hover:shadow-blue-500/20 transition duration-300 transform hover:-translate-y-2 group">
+                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:bg-blue-600 transition">
+                    <i class="fas fa-building text-2xl text-blue-600 group-hover:text-white"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-3">Corporate Portal B2B</h2>
+                <p class="text-gray-600">Company profile, layanan logistik enterprise, peta distribusi, dan akses rekanan bisnis.</p>
+                <div class="mt-6 text-blue-600 font-semibold group-hover:text-blue-800">Masuk Portal &rarr;</div>
+            </a>
+
+            <a href="mobile.html" class="bg-white rounded-2xl p-8 shadow-2xl hover:shadow-green-500/20 transition duration-300 transform hover:-translate-y-2 group">
+                <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:bg-green-600 transition">
+                    <i class="fas fa-mobile-alt text-2xl text-green-600 group-hover:text-white"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-3">Mobile Web App</h2>
+                <p class="text-gray-600">Aplikasi utilitas ringkas untuk lacak resi, cek tarif instan, dan akses cepat staf lapangan.</p>
+                <div class="mt-6 text-green-600 font-semibold group-hover:text-green-800">Buka Aplikasi &rarr;</div>
+            </a>
+        </div>
     </div>
-    <script type="module" src="./assets/js/auth.js"></script>
 </body>
 </html>
