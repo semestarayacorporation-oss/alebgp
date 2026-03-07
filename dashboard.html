@@ -3,34 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - BGPL Albatros</title>
+    <title>Sistem Internal | PT. Albatros Express</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="./assets/styles/custom.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Smooth transition untuk render SPA */
+        #app-content {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom scrollbar untuk estetika enterprise */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased flex h-screen overflow-hidden">
-    
-    <aside id="sidebar" class="w-64 bg-indigo-900 text-white flex flex-col transition-all duration-300">
-        <div class="p-4 border-b border-indigo-800 flex justify-between items-center">
+<body class="bg-gray-100 font-sans flex h-screen overflow-hidden text-gray-800">
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-20 hidden transition-opacity lg:hidden" onclick="toggleSidebar()"></div>
+
+    <aside id="sidebar" class="bg-blue-900 text-white w-64 flex-shrink-0 absolute inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out z-30 flex flex-col shadow-2xl">
+        <div class="h-16 flex items-center px-6 bg-blue-950 border-b border-blue-800 flex-shrink-0">
+            <i class="fas fa-truck-fast text-2xl mr-3 text-blue-400"></i>
             <span class="text-xl font-bold tracking-wider">ALBATROS</span>
         </div>
-        <nav id="sidebar-nav" class="flex-1 overflow-y-auto py-4"></nav>
-        <div class="p-4 border-t border-indigo-800">
-            <button id="logoutBtn" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded">Logout</button>
+
+        <div class="px-6 py-4 border-b border-blue-800 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-blue-700 flex items-center justify-center text-lg font-bold">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="overflow-hidden">
+                <p id="user-display-name" class="text-sm font-semibold truncate">Memuat...</p>
+                <p id="user-display-role" class="text-xs text-blue-300 truncate">Sistem Logistik</p>
+            </div>
         </div>
+
+        <nav class="flex-1 overflow-y-auto py-4 px-3" id="sidebar-menu">
+            </nav>
     </aside>
 
-    <div class="flex-1 flex flex-col">
-        <header class="bg-white shadow-sm p-4 flex justify-between items-center">
-            <h2 id="page-title" class="text-xl font-semibold text-gray-800">Dashboard</h2>
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        
+        <header class="h-16 bg-white shadow-sm border-b border-gray-200 flex items-center justify-between px-4 lg:px-8 z-10 flex-shrink-0">
+            <div class="flex items-center">
+                <button onclick="toggleSidebar()" class="text-gray-600 focus:outline-none lg:hidden mr-4 hover:text-blue-600 transition">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h2 id="page-title" class="text-lg font-semibold text-gray-700 hidden sm:block">Sistem Operasional Terpadu</h2>
+            </div>
+
             <div class="flex items-center space-x-4">
-                <span id="userInfo" class="text-sm font-medium text-gray-600"></span>
+                <div class="relative">
+                    <button class="text-gray-500 hover:text-blue-600 transition relative">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute top-0 right-0 -mt-1 -mr-1 flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                        </span>
+                    </button>
+                </div>
             </div>
         </header>
-        <main class="flex-1 overflow-y-auto p-6" id="app-content">
-            </main>
+
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 relative">
+            <div class="container mx-auto px-4 py-6 max-w-7xl" id="app-content">
+                </div>
+        </main>
     </div>
 
-    <script type="module" src="./assets/js/app.js"></script>
+    <script>
+        // Logika Off-Canvas Toggle untuk Mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        // Script sementara untuk menampilkan data user di Sidebar (menjembatani auth.js)
+        window.addEventListener('load', () => {
+            const session = localStorage.getItem('albatros_session');
+            if (session) {
+                const user = JSON.parse(session);
+                document.getElementById('user-display-name').innerText = user.name || user.username;
+                document.getElementById('user-display-role').innerText = user.role;
+            }
+        });
+    </script>
+
+    <script type="module" src="app.js"></script>
 </body>
 </html>
