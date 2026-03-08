@@ -3,93 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALE-BGP COMMAND CENTER | KPI MATRIX</title>
+    <title>ALE-BGP COMMAND CENTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#004080',
+                            dark: '#1a202c',
+                            gray: '#f3f4f6',
+                            accent: '#0059b3'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .page-section { display: none; }
+        .page-section.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #004080; border-radius: 3px; }
+    </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans flex h-screen overflow-hidden">
+<body class="bg-brand-gray text-gray-800 font-sans h-screen flex overflow-hidden">
 
-    <aside class="w-72 bg-gray-950 border-r border-gray-800 flex flex-col z-20">
-        <div class="p-6 border-b border-gray-800">
-            <h1 class="text-xl font-black text-white tracking-widest">ALE-BGP</h1>
-            <p class="text-xs text-blue-500 font-mono mt-1">KPI MATRIX SYSTEM</p>
+    <aside class="w-72 bg-brand-dark text-white flex flex-col shadow-2xl z-20">
+        <div class="p-6 border-b border-gray-700 bg-brand-blue">
+            <h1 class="text-2xl font-black tracking-wider">ALE-BGP</h1>
+            <p class="text-xs text-blue-200 mt-1 uppercase tracking-widest font-semibold">Command Center V1</p>
         </div>
+        
         <nav class="flex-1 overflow-y-auto py-4">
-            <div class="px-6 mb-2 text-xs font-bold text-gray-600 uppercase">Executive Level</div>
-            <button class="w-full text-left px-6 py-3 hover:bg-gray-800 text-sm font-medium border-l-4 border-blue-500 text-blue-400">
-                <i class="fa-solid fa-globe w-5"></i> Global Dashboard
+            <div class="px-6 mb-2 text-xs font-bold text-gray-500 uppercase tracking-widest">Master Control</div>
+            <button onclick="navigate('global')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 hover:bg-gray-800 text-left text-sm transition border-l-4 border-transparent focus:border-blue-500 hover:border-blue-500" data-target="global">
+                <i class="fa-solid fa-chart-pie w-5 text-blue-400"></i> Global Dashboard
             </button>
-            <button class="w-full text-left px-6 py-3 hover:bg-gray-800 text-sm font-medium text-gray-400">
-                <i class="fa-solid fa-crosshairs w-5"></i> HO2 & BusDev
+            <button onclick="navigate('ho2')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 hover:bg-gray-800 text-left text-sm transition border-l-4 border-transparent focus:border-blue-500 hover:border-blue-500" data-target="ho2">
+                <i class="fa-solid fa-crosshairs w-5 text-indigo-400"></i> HO2 & BusDev
             </button>
-            
-            <div class="px-6 mt-6 mb-2 text-xs font-bold text-gray-600 uppercase">Tactical Divisions</div>
-            <button class="w-full text-left px-6 py-3 hover:bg-gray-800 text-sm font-medium text-gray-400">
-                <i class="fa-solid fa-chart-line w-5"></i> Sales & Marketing
+
+            <div class="px-6 mb-2 mt-6 text-xs font-bold text-gray-500 uppercase tracking-widest">Tactical Divisions</div>
+            <button onclick="navigate('sales')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 hover:bg-gray-800 text-left text-sm transition border-l-4 border-transparent focus:border-green-500 hover:border-green-500" data-target="sales">
+                <i class="fa-solid fa-handshake w-5 text-green-400"></i> Sales Marketing
             </button>
-            <button class="w-full text-left px-6 py-3 hover:bg-gray-800 text-sm font-medium text-gray-400">
-                <i class="fa-solid fa-truck-fast w-5"></i> Project Operations
+            <button onclick="navigate('ops')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 hover:bg-gray-800 text-left text-sm transition border-l-4 border-transparent focus:border-yellow-500 hover:border-yellow-500" data-target="ops">
+                <i class="fa-solid fa-truck-fast w-5 text-yellow-400"></i> Project Operations
             </button>
-            <button class="w-full text-left px-6 py-3 hover:bg-gray-800 text-sm font-medium text-gray-400">
-                <i class="fa-solid fa-headset w-5"></i> General Support
+            <button onclick="navigate('support')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 hover:bg-gray-800 text-left text-sm transition border-l-4 border-transparent focus:border-purple-500 hover:border-purple-500" data-target="support">
+                <i class="fa-solid fa-headset w-5 text-purple-400"></i> General Support
+            </button>
+
+            <div class="px-6 mb-2 mt-6 text-xs font-bold text-gray-500 uppercase tracking-widest">Corporate Archives</div>
+            <button onclick="navigate('doc')" class="nav-btn w-full flex items-center gap-3 px-6 py-3 hover:bg-gray-800 text-left text-sm transition border-l-4 border-transparent focus:border-red-500 hover:border-red-500" data-target="doc">
+                <i class="fa-solid fa-folder-open w-5 text-red-400"></i> Document Corporate
             </button>
         </nav>
     </aside>
 
-    <main class="flex-1 flex flex-col bg-gray-900">
-        <header class="h-16 bg-gray-950 border-b border-gray-800 flex items-center px-8 justify-between">
-            <h2 class="text-lg font-bold tracking-wide">STRATEGIC FUNDING & STABILITY</h2>
-            <div class="text-xs font-mono text-green-500 flex items-center gap-2">
-                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> G-SHEETS SYNCED
+    <main class="flex-1 flex flex-col relative overflow-hidden">
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm z-10">
+            <h2 id="page-title" class="text-lg font-bold text-brand-blue uppercase tracking-wide">STRATEGIC / OWNER DASHBOARD</h2>
+            <div class="flex items-center gap-4 text-sm font-semibold text-gray-600">
+                <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-yellow-500"></span> V1 STATIC MODE</span>
             </div>
         </header>
 
-        <div class="p-8 overflow-auto grid gap-6">
-            <div class="grid grid-cols-4 gap-4">
-                <div class="bg-gray-800 p-5 rounded border border-gray-700">
-                    <p class="text-xs text-gray-400 uppercase">Funding Availability</p>
-                    <h3 class="text-xl font-bold mt-1 text-white">Modal Operasional</h3>
-                    <p class="text-xs text-blue-400 mt-2">Target: Quarterly</p>
-                </div>
-                <div class="bg-gray-800 p-5 rounded border border-gray-700">
-                    <p class="text-xs text-gray-400 uppercase">Financial Stability</p>
-                    <h3 class="text-xl font-bold mt-1 text-green-400">Cashflow Sehat</h3>
-                    <p class="text-xs text-blue-400 mt-2">Target: Monthly</p>
-                </div>
-                <div class="bg-gray-800 p-5 rounded border border-gray-700">
-                    <p class="text-xs text-gray-400 uppercase">Cross Div Coordination</p>
-                    <h3 class="text-xl font-bold mt-1 text-white">Lancar</h3>
-                    <p class="text-xs text-blue-400 mt-2">Eval: Weekly</p>
-                </div>
-                <div class="bg-gray-800 p-5 rounded border border-gray-700">
-                    <p class="text-xs text-gray-400 uppercase">Ops Project Flow</p>
-                    <h3 class="text-xl font-bold mt-1 text-yellow-400">≥95%</h3>
-                    <p class="text-xs text-blue-400 mt-2">Eval: Weekly</p>
-                </div>
-            </div>
+        <div class="flex-1 overflow-auto p-8">
 
-            <div class="grid grid-cols-2 gap-6">
-                <div class="bg-gray-800 p-5 rounded border border-gray-700">
-                    <h4 class="font-bold border-b border-gray-700 pb-2 mb-3">Jadwal Rutin Mingguan</h4>
-                    <ul class="text-sm space-y-2 text-gray-300">
-                        <li class="flex justify-between"><span class="text-gray-500">Senin & Jumat</span> <span>Proyeksi Planning / Evaluasi Laprn.</span></li>
-                        <li class="flex justify-between"><span class="text-gray-500">Selasa</span> <span>Per Divisi Target</span></li>
-                        <li class="flex justify-between"><span class="text-gray-500">Rabu</span> <span>Personal Presentasi</span></li>
-                        <li class="flex justify-between"><span class="text-gray-500">Kamis</span> <span>Diskusi & Presentasi</span></li>
-                    </ul>
+            <section id="global" class="page-section active space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 border-t-4 border-t-brand-blue">
+                    <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">Strategic KPI Matrix (Agus Ariadi & Rizky Firdaus)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="bg-gray-50 p-4 rounded border border-gray-200 hover:shadow-md transition">
+                            <p class="text-xs text-gray-500 font-bold uppercase">Funding Availability</p>
+                            <h4 class="text-lg font-black text-brand-blue mt-1">Modal Tersedia</h4>
+                            <p class="text-xs text-gray-400 mt-2"><i class="fa-solid fa-clock"></i> Quarterly</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded border border-gray-200 hover:shadow-md transition">
+                            <p class="text-xs text-gray-500 font-bold uppercase">Financial Stability</p>
+                            <h4 class="text-lg font-black text-green-600 mt-1">Cashflow Sehat</h4>
+                            <p class="text-xs text-gray-400 mt-2"><i class="fa-solid fa-clock"></i> Monthly</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded border border-gray-200 hover:shadow-md transition">
+                            <p class="text-xs text-gray-500 font-bold uppercase">Business Growth</p>
+                            <h4 class="text-lg font-black text-brand-blue mt-1">Tepat Waktu</h4>
+                            <p class="text-xs text-gray-400 mt-2"><i class="fa-solid fa-clock"></i> Quarterly</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded border border-gray-200 hover:shadow-md transition">
+                            <p class="text-xs text-gray-500 font-bold uppercase">Return On Investment</p>
+                            <h4 class="text-lg font-black text-brand-blue mt-1">Tercapai</h4>
+                            <p class="text-xs text-gray-400 mt-2"><i class="fa-solid fa-clock"></i> Yearly</p>
+                        </div>
+                    </div>
                 </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">Output Documents</h3>
+                    <div class="flex gap-4">
+                        <button class="bg-brand-blue text-white px-4 py-2 rounded text-sm hover:bg-brand-accent transition shadow"><i class="fa-solid fa-download mr-2"></i> Strategic Funding Plan</button>
+                        <button class="bg-brand-blue text-white px-4 py-2 rounded text-sm hover:bg-brand-accent transition shadow"><i class="fa-solid fa-download mr-2"></i> Investment Approval</button>
+                        <button class="bg-brand-blue text-white px-4 py-2 rounded text-sm hover:bg-brand-accent transition shadow"><i class="fa-solid fa-download mr-2"></i> Financial Oversight Report</button>
+                    </div>
+                </div>
+            </section>
 
-                <div class="bg-gray-800 p-5 rounded border border-gray-700">
-                    <h4 class="font-bold border-b border-gray-700 pb-2 mb-3">Sales Activity (Herlina - Irpan)</h4>
-                    <ul class="text-sm space-y-2 text-gray-300">
-                        <li class="flex justify-between"><span class="text-gray-500">09-11</span> <span>Commnctn Consumen</span></li>
-                        <li class="flex justify-between"><span class="text-gray-500">11-12</span> <span>Check Tender</span></li>
-                        <li class="flex justify-between"><span class="text-gray-500">13-14</span> <span>Diskusion</span></li>
-                        <li class="flex justify-between text-yellow-400 font-bold"><span class="text-yellow-500">15-16</span> <span>Input sistem</span></li>
-                    </ul>
+            <section id="ho2" class="page-section space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden border-t-4 border-t-indigo-500">
+                        <div class="bg-gray-50 p-4 border-b border-gray-200 font-bold text-gray-800">KPI Head of Operation (M. Rahmat Slam)</div>
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-brand-blue text-white"><tr><th class="p-3">Parameter</th><th class="p-3">Target</th><th class="p-3">Monitor</th></tr></thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-blue-50 transition"><td class="p-3 font-semibold">Kelancaran Project</td><td class="p-3">95% tanpa kendala</td><td class="p-3 text-gray-500">Weekly</td></tr>
+                                <tr class="hover:bg-blue-50 transition"><td class="p-3 font-semibold">Profitability Project</td><td class="p-3">Margin tercapai</td><td class="p-3 text-gray-500">Monthly</td></tr>
+                                <tr class="hover:bg-blue-50 transition"><td class="p-3 font-semibold">Operational Failure</td><td class="p-3">0 Incident besar</td><td class="p-3 text-gray-500">Weekly</td></tr>
+                                <tr class="hover:bg-blue-50 transition"><td class="p-3 font-semibold">Target Revenue Ops</td><td class="p-3">Sesuai target</td><td class="p-3 text-gray-500">Monthly</td></tr>
+                                <tr class="hover:bg-blue-50 transition"><td class="p-3 font-semibold">Team Coordination</td><td class="p-3">Sinkron</td><td class="p-3 text-gray-500">Weekly</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden border-t-4 border-t-indigo-500">
+                        <div class="bg-gray-50 p-4 border-b border-gray-200 font-bold text-gray-800">KPI Business Dev (Taufiq Rahman)</div>
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-brand-blue text-white"><tr><th class="p-3">Parameter</th><th class="p-3">Target</th><th class="p-3">Monitor</th></tr></thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-blue-50 transition"><td class="p-3 font-semibold">KPI Compliance</td><td class="p-3">≥90% tercapai</td><td class="p-3 text-gray-500">Weekly</td></tr>
+                                <tr class="hover:bg-blue-50 transition"><td class="p-3 font-semibold">Operational Stability</td><td class="p-3">No bottleneck</td><td class="p-3 text-gray-500">Weekly</td></tr>
+                                <tr class="hover:bg-blue-50 transition"><td class="p-3 font-semibold">SOP Implementation</td><td class="p-3">100% dijalankan</td><td class="p-3 text-gray-500">Monthly</td></tr>
+                                <tr class="hover:bg-blue-50 transition"><td class="p-3 font-semibold">Team Productivity</td><td class="p-3">Efisiensi naik</td><td class="p-3 text-gray-500">Monthly</td></tr>
+                                <tr class="hover:bg-blue-50 transition"><td class="p-3 font-semibold">Cross Div Coordination</td><td class="p-3">Lancar</td><td class="p-3 text-gray-500">Weekly</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <section id="sales" class="page-section space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden border-t-4 border-t-green-500">
+                            <div class="bg-gray-50 p-4 border-b border-gray-200 font-bold text-gray-800">KPI Utama (Herlina - Irpan)</div>
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-brand-blue text-white"><tr><th class="p-3">Metric</th><th class="p-3">Target</th></tr></thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr class="hover:bg-green-50 transition"><td class="p-3 font-semibold">New Client Acquisition</td><td class="p-3 font-bold text-green-600">3 / Minggu</td></tr>
+                                    <tr class="hover:bg-green-50 transition"><td class="p-3 font-semibold">Pipeline Project</td><td class="p-3 font-bold text-green-600">Min 10 Aktif</td></tr>
+                                    <tr class="hover:bg-green-50 transition"><td class="p-3 font-semibold">Project Closing Rate</td><td class="p-3 font-bold text-green-600">≥ 30%</td></tr>
+                                    <tr class="hover:bg-green-50 transition"><td class="p-3 font-semibold">Market Expansion</td><td class="p-3">Tambah area</td></tr>
+                                    <tr class="hover:bg-green-50 transition"><td class="p-3 font-semibold">Customer Relationship</td><td class="p-3">Repeat order naik</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                            <div class="bg-gray-50 p-4 border-b border-gray-200 font-bold text-gray-800">Aktivitas Sales</div>
+                            <div class="grid grid-cols-4 divide-x divide-gray-200 text-center">
+                                <div class="p-4 hover:bg-gray-50"><p class="text-2xl font-black text-brand-blue">3</p><p class="text-xs text-gray-500 mt-1">Dealing PO / Mgg</p></div>
+                                <div class="p-4 hover:bg-gray-50"><p class="text-2xl font-black text-brand-blue">4</p><p class="text-xs text-gray-500 mt-1">Presentasi / Bln</p></div>
+                                <div class="p-4 hover:bg-gray-50"><p class="text-2xl font-black text-brand-blue">3</p><p class="text-xs text-gray-500 mt-1">Follow up / Mgg</p></div>
+                                <div class="p-4 hover:bg-gray-50"><p class="text-2xl font-black text-brand-blue">1</p><p class="text-xs text-gray-500 mt-1">Meeting / Bln</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 border-t-4 border-t-gray-800">
+                        <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">Rutinitas Harian</h3>
+                        <div class="space-y-4 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-brand-blue text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                                    <i class="fa-solid fa-phone text-xs"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded border border-gray-200 shadow-sm">
+                                    <span class="font-bold text-brand-blue">09:00 - 11:00</span>
+                                    <p class="text-sm text-gray-600 mt-1">Commnctn Consumen</p>
+                                </div>
+                            </div>
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-brand-blue text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                                    <i class="fa-solid fa-file-contract text-xs"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded border border-gray-200 shadow-sm">
+                                    <span class="font-bold text-brand-blue">11:00 - 12:00</span>
+                                    <p class="text-sm text-gray-600 mt-1">Check Tender</p>
+                                </div>
+                            </div>
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-brand-blue text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                                    <i class="fa-solid fa-users text-xs"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-4 rounded border border-gray-200 shadow-sm">
+                                    <span class="font-bold text-brand-blue">13:00 - 14:00</span>
+                                    <p class="text-sm text-gray-600 mt-1">Diskusi Internal</p>
+                                </div>
+                            </div>
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-red-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                                    <i class="fa-solid fa-desktop text-xs"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-red-50 p-4 rounded border border-red-200 shadow-sm">
+                                    <span class="font-bold text-red-600">15:00 - 16:00</span>
+                                    <p class="text-sm text-red-800 mt-1 font-bold">INPUT SISTEM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ops" class="page-section space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden border-t-4 border-t-yellow-500">
+                        <div class="bg-gray-50 p-4 border-b border-gray-200 font-bold text-gray-800">KPI Project Ops (Keinisa - Dio Alif)</div>
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-brand-blue text-white"><tr><th class="p-3">Metric</th><th class="p-3">Target</th></tr></thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-yellow-50 transition"><td class="p-3 font-semibold">Ketepatan Pengiriman</td><td class="p-3 font-bold text-green-600">≥ 95% On Time</td></tr>
+                                <tr class="hover:bg-yellow-50 transition"><td class="p-3 font-semibold">Kelancaran Project</td><td class="p-3 font-bold text-green-600">≥ 95% Tanpa Kendala</td></tr>
+                                <tr class="hover:bg-yellow-50 transition"><td class="p-3 font-semibold">Vendor Reliability</td><td class="p-3">≥ 90% Perform Baik</td></tr>
+                                <tr class="hover:bg-yellow-50 transition"><td class="p-3 font-semibold">Operational Efficiency</td><td class="p-3">Biaya Optimal</td></tr>
+                                <tr class="hover:bg-yellow-50 transition"><td class="p-3 font-semibold">Dispatch Accuracy</td><td class="p-3 font-bold text-brand-blue">100% Tepat</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden border-t-4 border-t-gray-800">
+                        <div class="bg-gray-50 p-4 border-b border-gray-200 font-bold text-gray-800">Rutinitas Harian Ops</div>
+                        <ul class="divide-y divide-gray-200">
+                            <li class="p-4 flex justify-between items-center hover:bg-gray-50"><span class="font-bold w-32">09:00 - 10:00</span> <span class="text-gray-600 flex-1">Project Progress</span></li>
+                            <li class="p-4 flex justify-between items-center hover:bg-gray-50"><span class="font-bold w-32">10:00 - 12:00</span> <span class="text-gray-600 flex-1">New Vendor Comm</span></li>
+                            <li class="p-4 flex justify-between items-center hover:bg-gray-50"><span class="font-bold w-32">13:00 - 14:00</span> <span class="text-gray-600 flex-1">Diskusi Internal</span></li>
+                            <li class="p-4 flex justify-between items-center bg-red-50 text-red-800"><span class="font-black w-32">15:00 - 16:00</span> <span class="font-bold flex-1">INPUT SISTEM</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="support" class="page-section space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden border-t-4 border-t-purple-500">
+                        <div class="bg-gray-50 p-4 border-b border-gray-200 font-bold text-gray-800">KPI Support System (Dimas - Yudi)</div>
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-brand-blue text-white"><tr><th class="p-3">Metric</th><th class="p-3">Target</th></tr></thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr class="hover:bg-purple-50 transition"><td class="p-3 font-semibold">Kelengkapan Dokumen</td><td class="p-3 font-bold text-brand-blue">100% Lengkap</td></tr>
+                                <tr class="hover:bg-purple-50 transition"><td class="p-3 font-semibold">Dokumen Project</td><td class="p-3">0 Kesalahan Admin</td></tr>
+                                <tr class="hover:bg-purple-50 transition"><td class="p-3 font-semibold">Notul & Evaluasi</td><td class="p-3">Tersedia H-1</td></tr>
+                                <tr class="hover:bg-purple-50 transition"><td class="p-3 font-semibold">Koordinator Lapangan</td><td class="p-3">Sistematis</td></tr>
+                                <tr class="hover:bg-purple-50 transition"><td class="p-3 font-semibold">Dokumen Closing</td><td class="p-3 text-green-600 font-bold">Lengkap 100%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden border-t-4 border-t-gray-800">
+                        <div class="bg-gray-50 p-4 border-b border-gray-200 font-bold text-gray-800">Rutinitas Harian Support</div>
+                        <ul class="divide-y divide-gray-200">
+                            <li class="p-4 flex justify-between items-center hover:bg-gray-50"><span class="font-bold w-32">09:00 - 10:00</span> <span class="text-gray-600 flex-1">Team Progress</span></li>
+                            <li class="p-4 flex justify-between items-center hover:bg-gray-50"><span class="font-bold w-32">10:00 - 12:00</span> <span class="text-gray-600 flex-1">Checklist Team</span></li>
+                            <li class="p-4 flex justify-between items-center hover:bg-gray-50"><span class="font-bold w-32">13:00 - 14:00</span> <span class="text-gray-600 flex-1">Diskusi Internal</span></li>
+                            <li class="p-4 flex justify-between items-center bg-red-50 text-red-800"><span class="font-black w-32">15:00 - 16:00</span> <span class="font-bold flex-1">INPUT SISTEM</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="doc" class="page-section space-y-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden border-t-4 border-t-red-500">
+                    <div class="bg-gray-50 p-4 border-b border-gray-200 font-bold text-gray-800">Matriks Jadwal Rapat Rutin Korporat</div>
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-brand-blue text-white"><tr><th class="p-4 w-32">Hari</th><th class="p-4">Agenda Utama</th><th class="p-4 w-48">Status</th></tr></thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-red-50 transition"><td class="p-4 font-black text-gray-700">Senin</td><td class="p-4 text-gray-600 font-semibold">Proyeksi Planning Operasional</td><td class="p-4"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-bold">Wajib Hadir</span></td></tr>
+                            <tr class="hover:bg-red-50 transition"><td class="p-4 font-black text-gray-700">Selasa</td><td class="p-4 text-gray-600 font-semibold">Penetapan Target Per Divisi</td><td class="p-4"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-bold">Terjadwal</span></td></tr>
+                            <tr class="hover:bg-red-50 transition"><td class="p-4 font-black text-gray-700">Rabu</td><td class="p-4 text-gray-600 font-semibold">Personal Presentasi Kinerja</td><td class="p-4"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-bold">Terjadwal</span></td></tr>
+                            <tr class="hover:bg-red-50 transition"><td class="p-4 font-black text-gray-700">Kamis</td><td class="p-4 text-gray-600 font-semibold">Diskusi & Resolusi Konflik</td><td class="p-4"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-bold">Terjadwal</span></td></tr>
+                            <tr class="hover:bg-red-50 transition"><td class="p-4 font-black text-gray-700">Jumat</td><td class="p-4 text-gray-600 font-semibold">Evaluasi Laporan Aktivitas Mingguan</td><td class="p-4"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-bold">Mandatory Report</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
         </div>
     </main>
+
+    <script>
+        const titles = {
+            'global': 'STRATEGIC / OWNER DASHBOARD (Agus Ariadi & Rizky Firdaus)',
+            'ho2': 'KOMANDO OPERASIONAL & PENGEMBANGAN (Rahmat Slam & Taufiq)',
+            'sales': 'REVENUE GENERATOR DASHBOARD (Herlina - Irpan)',
+            'ops': 'EXECUTION ENGINE DASHBOARD (Keinisa - Dio Alif)',
+            'support': 'DOCUMENT CONTROL & SYSTEM SUPPORT (Dimas - Yudi)',
+            'doc': 'PUSAT ARSIP & LAPORAN KORPORAT'
+        };
+
+        function navigate(targetId) {
+            // Sembunyikan semua section
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            // Tampilkan section target
+            document.getElementById(targetId).classList.add('active');
+            
+            // Ubah judul header
+            document.getElementById('page-title').textContent = titles[targetId];
+
+            // Update styling tombol sidebar
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('border-blue-500', 'border-green-500', 'border-yellow-500', 'border-purple-500', 'border-red-500', 'bg-gray-800');
+            });
+            
+            const activeBtn = document.querySelector(`.nav-btn[data-target="${targetId}"]`);
+            activeBtn.classList.add('bg-gray-800');
+            
+            // Logika pewarnaan border aktif berdasarkan target
+            if (targetId === 'global' || targetId === 'ho2') activeBtn.classList.add('border-blue-500');
+            if (targetId === 'sales') activeBtn.classList.add('border-green-500');
+            if (targetId === 'ops') activeBtn.classList.add('border-yellow-500');
+            if (targetId === 'support') activeBtn.classList.add('border-purple-500');
+            if (targetId === 'doc') activeBtn.classList.add('border-red-500');
+        }
+    </script>
 </body>
 </html>
