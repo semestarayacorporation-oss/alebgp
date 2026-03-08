@@ -3,36 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Utama | PT. Albatros Express</title>
+    <title>ALE-BGP COMMAND CENTER</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Custom Scrollbar for Enterprise Look */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #1f2937; }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 3px; }
+        .module-section { display: none; }
+        .module-section.active { display: block; }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-blue-900 to-gray-900 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-4xl w-full">
-        <div class="text-center mb-10">
-            <h1 class="text-4xl font-bold text-white mb-2">PT. Albatros Express</h1>
-            <p class="text-blue-200 text-lg">BGPL Provider Logistics System</p>
-        </div>
+<body class="bg-gray-900 text-gray-100 h-screen flex overflow-hidden font-sans">
 
-        <div class="grid md:grid-cols-2 gap-6">
-            <a href="corporate.html" class="bg-white rounded-2xl p-8 shadow-2xl hover:shadow-blue-500/20 transition duration-300 transform hover:-translate-y-2 group">
-                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:bg-blue-600 transition">
-                    <i class="fas fa-building text-2xl text-blue-600 group-hover:text-white"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-3">Corporate Portal B2B</h2>
-                <p class="text-gray-600">Company profile, layanan logistik enterprise, peta distribusi, dan akses rekanan bisnis.</p>
-                <div class="mt-6 text-blue-600 font-semibold group-hover:text-blue-800">Masuk Portal &rarr;</div>
-            </a>
-
-            <a href="mobile.html" class="bg-white rounded-2xl p-8 shadow-2xl hover:shadow-green-500/20 transition duration-300 transform hover:-translate-y-2 group">
-                <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:bg-green-600 transition">
-                    <i class="fas fa-mobile-alt text-2xl text-green-600 group-hover:text-white"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-3">Mobile Web App</h2>
-                <p class="text-gray-600">Aplikasi utilitas ringkas untuk lacak resi, cek tarif instan, dan akses cepat staf lapangan.</p>
-                <div class="mt-6 text-green-600 font-semibold group-hover:text-green-800">Buka Aplikasi &rarr;</div>
-            </a>
+    <aside class="w-64 bg-gray-800 flex flex-col shadow-2xl z-20 border-r border-gray-700">
+        <div class="p-6 border-b border-gray-700 flex items-center gap-3">
+            <i class="fa-solid fa-shield-halved text-blue-500 text-2xl"></i>
+            <div>
+                <h1 class="text-lg font-bold tracking-wider">ALE-BGP</h1>
+                <p class="text-xs text-gray-400">WAR ROOM SYSTEM</p>
+            </div>
         </div>
-    </div>
+        
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+            <p class="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-widest">Master Control</p>
+            <button onclick="switchModule('module-director')" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition text-left text-sm font-medium focus:ring-1 focus:ring-blue-500">
+                <i class="fa-solid fa-chart-line w-5 text-blue-400"></i> Director Dashboard
+            </button>
+            <button onclick="switchModule('module-sales')" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition text-left text-sm font-medium focus:ring-1 focus:ring-blue-500">
+                <i class="fa-solid fa-handshake w-5 text-green-400"></i> Sales Pipeline
+            </button>
+            <button onclick="switchModule('module-project')" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition text-left text-sm font-medium focus:ring-1 focus:ring-blue-500">
+                <i class="fa-solid fa-truck-fast w-5 text-yellow-400"></i> Project Control
+            </button>
+            <button onclick="switchModule('module-vendor')" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition text-left text-sm font-medium focus:ring-1 focus:ring-blue-500">
+                <i class="fa-solid fa-users-gear w-5 text-purple-400"></i> Vendor Intelligence
+            </button>
+            <button onclick="switchModule('module-document')" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition text-left text-sm font-medium focus:ring-1 focus:ring-blue-500">
+                <i class="fa-solid fa-file-signature w-5 text-red-400"></i> Document Control
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-gray-700">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold">AA</div>
+                <div class="text-sm">
+                    <p class="font-bold">Agus Ariadi</p>
+                    <p class="text-xs text-gray-400">Strategic Level</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col relative overflow-hidden bg-gray-900">
+        
+        <header class="h-16 bg-gray-800 border-b border-gray-700 flex items-center justify-between px-6 shadow-md z-10">
+            <h2 id="current-module-title" class="text-xl font-bold text-gray-200 uppercase tracking-wide">DIRECTOR WAR DASHBOARD</h2>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-2 text-sm text-gray-400">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    API Sync: Live
+                </span>
+                <span id="clock" class="text-sm font-mono text-gray-300">00:00:00</span>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-auto p-6 scroll-smooth">
+            
+            <section id="module-director" class="module-section active space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-sm">
+                        <p class="text-gray-400 text-sm">Monthly Revenue</p>
+                        <h3 class="text-2xl font-bold text-white mt-1" id="kpi-revenue">Rp 0</h3>
+                        <p class="text-green-400 text-xs mt-2"><i class="fa-solid fa-arrow-up"></i> 12% vs Last Month</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-sm">
+                        <p class="text-gray-400 text-sm">Active Projects</p>
+                        <h3 class="text-2xl font-bold text-white mt-1" id="kpi-projects">0</h3>
+                        <p class="text-gray-400 text-xs mt-2">Logistics Running</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-sm">
+                        <p class="text-gray-400 text-sm">On Time Delivery</p>
+                        <h3 class="text-2xl font-bold text-white mt-1" id="kpi-otd">0%</h3>
+                        <p class="text-green-400 text-xs mt-2">Target: 95%</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-sm">
+                        <p class="text-gray-400 text-sm">Invoice Outstanding</p>
+                        <h3 class="text-2xl font-bold text-white mt-1" id="kpi-outstanding">Rp 0</h3>
+                        <p class="text-red-400 text-xs mt-2"><i class="fa-solid fa-circle-exclamation"></i> Action Required</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-gray-800 p-5 rounded-xl border border-gray-700">
+                        <h4 class="text-sm font-semibold text-gray-300 mb-4">Capital Utilization & Cashflow</h4>
+                        <canvas id="financeChart" height="100"></canvas>
+                    </div>
+                    <div class="bg-gray-800 p-5 rounded-xl border border-gray-700">
+                        <h4 class="text-sm font-semibold text-gray-300 mb-4">Pipeline vs Realization</h4>
+                        <canvas id="pipelineChart" height="100"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="module-project" class="module-section space-y-6">
+                <div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+                    <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+                        <h3 class="font-bold">Active Logistics Projects</h3>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Search Project ID..." class="bg-gray-900 border border-gray-600 rounded px-3 py-1 text-sm focus:outline-none focus:border-blue-500">
+                            <button class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm transition">Filter</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead class="bg-gray-900 text-gray-400">
+                                <tr>
+                                    <th class="p-4 font-medium">Project ID</th>
+                                    <th class="p-4 font-medium">Client</th>
+                                    <th class="p-4 font-medium">Route</th>
+                                    <th class="p-4 font-medium">Vendor</th>
+                                    <th class="p-4 font-medium">Status</th>
+                                    <th class="p-4 font-medium">PIC</th>
+                                </tr>
+                            </thead>
+                            <tbody id="project-table-body" class="divide-y divide-gray-700">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="module-sales" class="module-section"><div class="p-10 text-center text-gray-500">Sales Pipeline System Interface (Table Layout)</div></section>
+            <section id="module-vendor" class="module-section"><div class="p-10 text-center text-gray-500">Vendor Intelligence System Interface (Table Layout)</div></section>
+            <section id="module-document" class="module-section"><div class="p-10 text-center text-gray-500">Document Master Control Interface (Table Layout)</div></section>
+
+        </div>
+    </main>
+
+    <script>
+        // --- UI CONTROLS ---
+        function updateClock() {
+            document.getElementById('clock').textContent = new Date().toLocaleTimeString('id-ID');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function switchModule(moduleId) {
+            document.querySelectorAll('.module-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(moduleId).classList.add('active');
+            
+            const titles = {
+                'module-director': 'DIRECTOR WAR DASHBOARD',
+                'module-sales': 'SALES PIPELINE SYSTEM',
+                'module-project': 'PROJECT CONTROL CENTER',
+                'module-vendor': 'VENDOR INTELLIGENCE SYSTEM',
+                'module-document': 'DOCUMENT MASTER CONTROL'
+            };
+            document.getElementById('current-module-title').textContent = titles[moduleId];
+        }
+
+        // --- GOOGLE SHEETS API CONNECTOR (SIMULATION) ---
+        /*
+         * Dalam implementasi produksi, gunakan Google Apps Script Web App untuk melakukan bypass CORS 
+         * dan menghindari eksposur API Key secara publik.
+         * Contoh Fetch:
+         * fetch('YOUR_GAS_WEB_APP_URL?sheet=RunningLogistics')
+         * .then(res => res.json())
+         * .then(data => renderData(data));
+         */
+        
+        const GoogleSheetsConnector = {
+            fetchFinanceData: async () => {
+                // Simulasi delay jaringan
+                return new Promise(resolve => setTimeout(() => resolve({
+                    revenue: "Rp 4.250.000.000",
+                    activeProjects: 14,
+                    otd: "92%",
+                    outstanding: "Rp 850.000.000"
+                }), 500));
+            },
+            fetchProjectData: async () => {
+                return new Promise(resolve => setTimeout(() => resolve([
+                    { id: "PRJ-2603-01", client: "PT PLN (Persero)", route: "Bandung - NTT", vendor: "Lintas Nusa", status: "In Transit", pic: "Keinisa" },
+                    { id: "PRJ-2603-02", client: "B3 Migas Corp", route: "Jakarta - Surabaya", vendor: "Trans Java", status: "Loading", pic: "Dio Alif" },
+                    { id: "PRJ-2603-03", client: "PT Hujan Rezeki", route: "Bogor Local", vendor: "Internal Fleet", status: "Completed", pic: "Keinisa" }
+                ]), 600));
+            }
+        };
+
+        // --- DATA INITIALIZATION ---
+        async function initSystem() {
+            // Load KPI Data
+            const finance = await GoogleSheetsConnector.fetchFinanceData();
+            document.getElementById('kpi-revenue').textContent = finance.revenue;
+            document.getElementById('kpi-projects').textContent = finance.activeProjects;
+            document.getElementById('kpi-otd').textContent = finance.otd;
+            document.getElementById('kpi-outstanding').textContent = finance.outstanding;
+
+            // Load Project Table
+            const projects = await GoogleSheetsConnector.fetchProjectData();
+            const tbody = document.getElementById('project-table-body');
+            tbody.innerHTML = projects.map(p => `
+                <tr class="hover:bg-gray-800 transition">
+                    <td class="p-4 text-blue-400 font-mono text-xs">${p.id}</td>
+                    <td class="p-4 font-medium text-gray-200">${p.client}</td>
+                    <td class="p-4 text-gray-400">${p.route}</td>
+                    <td class="p-4 text-gray-400">${p.vendor}</td>
+                    <td class="p-4">
+                        <span class="px-2 py-1 rounded text-xs font-bold ${p.status === 'Completed' ? 'bg-green-900 text-green-300' : p.status === 'In Transit' ? 'bg-blue-900 text-blue-300' : 'bg-yellow-900 text-yellow-300'}">
+                            ${p.status}
+                        </span>
+                    </td>
+                    <td class="p-4 text-gray-400">${p.pic}</td>
+                </tr>
+            `).join('');
+
+            // Init Charts
+            initCharts();
+        }
+
+        function initCharts() {
+            const ctxFin = document.getElementById('financeChart').getContext('2d');
+            new Chart(ctxFin, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [{ label: 'Cashflow (M)', data: [1.2, 1.9, 3.4, 4.2, 4.8], borderColor: '#3b82f6', tension: 0.4 }]
+                },
+                options: { responsive: true, scales: { y: { grid: { color: '#374151' } }, x: { grid: { color: '#374151' } } } }
+            });
+
+            const ctxPipe = document.getElementById('pipelineChart').getContext('2d');
+            new Chart(ctxPipe, {
+                type: 'bar',
+                data: {
+                    labels: ['Quotation', 'Negotiation', 'Closing'],
+                    datasets: [{ label: 'Value (M)', data: [8.5, 5.2, 4.2], backgroundColor: ['#8b5cf6', '#f59e0b', '#10b981'] }]
+                },
+                options: { responsive: true, scales: { y: { grid: { color: '#374151' } }, x: { grid: { display: false } } } }
+            });
+        }
+
+        // Boot system
+        document.addEventListener('DOMContentLoaded', initSystem);
+    </script>
 </body>
 </html>
